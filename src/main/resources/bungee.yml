@@ -1,4 +1,0 @@
-author: vemacs
-main: me.vemacs.executeeverywhere.bungee.ExecuteEverywhere
-name: ExecuteEverywhere
-version: ${version}

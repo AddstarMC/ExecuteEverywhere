@@ -1,3 +1,45 @@
-ip: 127.0.0.1
-port: 6379
-password: ""
+# ExecuteEverywhere
+#
+# Every server that should send or run commands must use the same Redis and the same channel.
+
+# Redis pub/sub channel. "ee" matches the original plugin, so old and new versions can run side by side.
+channel: ee
+
+redis:
+  # "sentinel" (recommended, follows failovers) or "standalone" (a single fixed Redis node).
+  mode: sentinel
+
+  sentinel:
+    # The master name the sentinels monitor (the name in "sentinel monitor <name> ...").
+    master-name: mymaster
+    # Sentinel addresses as host:port. List all of them, any one that is reachable is enough.
+    nodes:
+      - 127.0.0.1:26379
+    # Credentials for the sentinels themselves. Leave blank if they don't require auth.
+    username: ""
+    password: ""
+
+  # Used only when mode is "standalone".
+  standalone:
+    host: 127.0.0.1
+    port: 6379
+
+  # Credentials for the Redis data nodes. Leave username blank to use password-only AUTH,
+  # and both blank if Redis has no auth.
+  username: ""
+  password: ""
+
+  connect-timeout-ms: 2000
+  socket-timeout-ms: 2000
+
+resilience:
+  # How often the subscription is checked with a PING, and also how often a change of master is checked for.
+  health-check-interval-seconds: 5
+  # Reconnect if the subscription has had no reply for this long. Must be larger than the interval.
+  health-check-timeout-seconds: 15
+  # Reconnect backoff. Starts at the minimum, doubles after each failed attempt, capped at the maximum.
+  reconnect-min-delay-ms: 500
+  reconnect-max-delay-ms: 15000
+  # How long /ee keeps trying to reach Redis before giving up (e.g. during a failover).
+  # A command is only retried if it definitely wasn't sent, so it can't run twice. 0 disables retries.
+  publish-retry-seconds: 30

@@ -1,21 +1,23 @@
-author: vemacs
-main: me.vemacs.executeeverywhere.bukkit.ExecuteEverywhere
 name: ExecuteEverywhere
 version: ${version}
+main: au.com.addstar.executeeverywhere.ExecuteEverywhere
+api-version: '1.20'
+description: Runs a console command on every connected server via Redis pub/sub.
+authors: [vemacs, AddstarMC]
 commands:
   ee:
-    description: Dispatches a command for execution to all connected Bukkit servers.
+    description: Runs a console command on every connected server.
     aliases: [executeeverywhere]
     permission: executeeverywhere.use
-    usage: /ee <cmd>
-    permission-message: You don't have permission to use this.
-  eb:
-    description: Dispatches a command for execution to all connected BungeeCord servers.
-    aliases: [executebungee]
-    permission: executeeverywhere.use
-    usage: /eb <cmd>
-    permission-message: You don't have permission to use this.
+    usage: /ee <command>
+  eestatus:
+    description: Shows the Redis connection status for ExecuteEverywhere.
+    permission: executeeverywhere.status
+    usage: /eestatus
 permissions:
   executeeverywhere.use:
-    description: Lets you dispatch a command for execution on all servers.
+    description: Send a command to run on every server.
+    default: op
+  executeeverywhere.status:
+    description: View the Redis connection status.
     default: op
